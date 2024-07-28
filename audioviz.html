@@ -132,3 +132,41 @@ button:hover {
     <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
   </div>
 </div>
+
+<script>
+let audioContext;
+let analyser;
+let source;
+let canvas;
+let ctx;
+let animationId;
+let audioElement;
+let currentVisualization = 0;
+const visualizations = ['bars', 'circles', 'waveform'];
+let gainNode;
+
+function initAudio() {
+  audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioContext.createAnalyser();
+  analyser.fftSize = 256;
+  
+  gainNode = audioContext.createGain();
+
+  canvas = document.getElementById('visualizer');
+  ctx = canvas.getContext('2d');
+  
+  audioElement = new Audio();
+  audioElement.crossOrigin = "anonymous";
+  source = audioContext.createMediaElementSource(audioElement);
+  source.connect(gainNode);
+  gainNode.connect(analyser);
+  analyser.connect(audioContext.destination);
+
+  resize();
+  window.addEventListener('resize', resize);
+}
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}

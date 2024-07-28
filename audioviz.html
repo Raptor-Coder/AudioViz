@@ -260,3 +260,35 @@ function visualize() {
   }
   animationId = requestAnimationFrame(visualize);
 }
+
+function togglePlayPause() {
+  if (audioContext.state === 'suspended') {
+    audioContext.resume();
+  }
+
+  if (audioElement.paused) {
+    audioElement.play();
+    document.getElementById('playPause').textContent = 'Pause';
+    document.getElementById('songInfo').classList.add('pulse');
+  } else {
+    audioElement.pause();
+    document.getElementById('playPause').textContent = 'Play';
+    document.getElementById('songInfo').classList.remove('pulse');
+  }
+}
+
+function changeVisualization() {
+  currentVisualization = (currentVisualization + 1) % visualizations.length;
+}
+
+function uploadMusic(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      audioElement.src = e.target.result;
+      document.getElementById('songInfo').textContent = `Now playing: ${file.name}`;
+    };
+    reader.readAsDataURL(file);
+  }
+}

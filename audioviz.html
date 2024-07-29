@@ -319,3 +319,22 @@ function toggleMute() {
   }
   updateVolume();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  initAudio();
+
+  document.getElementById('playPause').addEventListener('click', togglePlayPause);
+  document.getElementById('changeViz').addEventListener('click', changeVisualization);
+  document.getElementById('uploadBtn').addEventListener('click', () => document.getElementById('fileInput').click());
+  document.getElementById('fileInput').addEventListener('change', uploadMusic);
+  document.getElementById('volumeSlider').addEventListener('input', updateVolume);
+  document.getElementById('volumeIcon').addEventListener('click', toggleMute);
+
+  // Start with a default song
+  audioElement.src = 'https://websim.ai/default-song.mp3';
+  document.getElementById('songInfo').textContent = 'Now playing: Default Song';
+
+  visualize();
+});
+</script>
+</body></html>

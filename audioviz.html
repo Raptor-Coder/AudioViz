@@ -292,3 +292,30 @@ function uploadMusic(event) {
     reader.readAsDataURL(file);
   }
 }
+
+function updateVolume() {
+  const volumeSlider = document.getElementById('volumeSlider');
+  const volumeIcon = document.getElementById('volumeIcon');
+  
+  gainNode.gain.setValueAtTime(volumeSlider.value, audioContext.currentTime);
+  
+  if (volumeSlider.value == 0) {
+    volumeIcon.textContent = '🔇';
+  } else if (volumeSlider.value < 0.5) {
+    volumeIcon.textContent = '🔉';
+  } else {
+    volumeIcon.textContent = '🔊';
+  }
+}
+
+function toggleMute() {
+  const volumeSlider = document.getElementById('volumeSlider');
+  if (gainNode.gain.value > 0) {
+    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+    volumeSlider.value = 0;
+  } else {
+    gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+    volumeSlider.value = 1;
+  }
+  updateVolume();
+}
